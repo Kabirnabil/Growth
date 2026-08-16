@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>GrowthOS Cloud</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <section id="authScreen" class="auth-screen">
+    <div class="auth-card">
+      <div class="brand" style="margin-bottom:18px">
+        <div class="brand-icon">⚡</div>
+        <div><h1>GrowthOS Cloud</h1><p>One account. Laptop + phone. Automatic sync.</p></div>
+      </div>
+
+      <div class="auth-tabs">
+        <button id="loginTab" class="active">Log in</button>
+        <button id="signupTab">Create account</button>
+      </div>
+
+      <form id="loginForm" class="auth-form">
+        <input id="loginEmail" type="email" autocomplete="email" placeholder="Email" required>
+        <input id="loginPassword" type="password" autocomplete="current-password" placeholder="Password" required>
+        <button class="primary-btn" type="submit">Log in</button>
+        <div class="auth-links"><button type="button" id="forgotBtn" class="link-btn">Forgot password?</button></div>
+      </form>
+
+      <form id="signupForm" class="auth-form hidden">
+        <input id="signupName" placeholder="Your name" required>
+        <input id="signupEmail" type="email" autocomplete="email" placeholder="Email" required>
+        <input id="signupPassword" type="password" autocomplete="new-password" minlength="8" placeholder="Password (8+ characters)" required>
+        <button class="primary-btn" type="submit">Create account</button>
+      </form>
+
+      <div id="authMsg" class="auth-msg"></div>
+    </div>
+  </section>
+
+  <div id="appShell" class="app-shell hidden">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">⚡</div>
+        <div><h1>GrowthOS</h1><p>Cloud Learning Dashboard</p></div>
+      </div>
+      <nav>
+        <button class="nav-btn active" data-view="dashboard">🏠 Dashboard</button>
+        <button class="nav-btn" data-view="calendar">📅 Roadmap</button>
+        <button class="nav-btn" data-view="tracker">✅ Daily Tracker</button>
+        <button class="nav-btn" data-view="cp">💻 CP Tracker</button>
+        <button class="nav-btn" data-view="research">🔬 Research Log</button>
+        <button class="nav-btn" data-view="youtube">🎥 YouTube</button>
+        <button class="nav-btn" data-view="analytics">📊 Analytics</button>
+        <button class="nav-btn" data-view="account">👤 Account</button>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="small-label">Goal</div>
+        <div class="goal-pill">Dec 31, 2026</div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h2 id="pageTitle">Dashboard</h2>
+          <p id="todayText"></p>
+        </div>
+        <div class="top-actions">
+          <span id="syncState" class="sync-pill">● Synced</span>
+          <div class="user-box"><span>👤</span><span id="userEmail"></span></div>
+          <button id="logoutBtn" class="ghost-btn">Log out</button>
+        </div>
+      </header>
+
+      <section id="dashboard" class="view active">
+        <div class="hero-card">
+          <div>
+            <span class="eyebrow">TODAY'S MISSION</span>
+            <h3 id="todayMissionTitle">Loading…</h3>
+            <p id="todayMissionDesc"></p>
+            <div class="hero-actions">
+              <button id="markTodayBtn" class="primary-btn">Mark Today Complete</button>
+              <button id="openRoadmapBtn" class="secondary-btn">Open Roadmap</button>
+            </div>
+          </div>
+          <div class="progress-ring-wrap">
+            <div class="progress-ring" id="overallRing"><span id="overallPct">0%</span></div>
+            <div class="small-label">Overall Roadmap</div>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card"><span>🔥</span><div><small>Current Streak</small><strong id="streakStat">0 days</strong></div></div>
+          <div class="stat-card"><span>💻</span><div><small>CP Problems</small><strong id="cpStat">0</strong></div></div>
+          <div class="stat-card"><span>🔬</span><div><small>Research Sessions</small><strong id="researchStat">0</strong></div></div>
+          <div class="stat-card"><span>🎥</span><div><small>YouTube Tasks</small><strong id="youtubeStat">0</strong></div></div>
+        </div>
+
+        <div class="two-col">
+          <div class="panel"><div class="panel-head"><h3>Today's Routine</h3><span class="badge">Daily</span></div><div id="todayRoutine" class="routine-list"></div></div>
+          <div class="panel"><div class="panel-head"><h3>Skill Progress</h3><span class="badge">Cloud</span></div><div id="skillProgress"></div></div>
+        </div>
+        <div class="panel"><div class="panel-head"><h3>Upcoming 7 Days</h3><span class="badge">Roadmap</span></div><div id="upcomingDays" class="upcoming-grid"></div></div>
+      </section>
+
+      <section id="calendar" class="view">
+        <div class="panel">
+          <div class="panel-head">
+            <h3>Aug 16 → Dec 31 Learning Roadmap</h3>
+            <div class="filters"><select id="monthFilter"><option value="all">All months</option></select><select id="trackFilter"><option value="all">All tracks</option><option>Python</option><option>C</option><option>C++</option><option>AI/ML</option><option>CP</option><option>Research</option></select></div>
+          </div>
+          <div id="roadmapList" class="roadmap-list"></div>
+        </div>
+      </section>
+
+      <section id="tracker" class="view">
+        <div class="two-col">
+          <div class="panel">
+            <div class="panel-head"><h3>Daily Habit Tracker</h3><span id="trackerDate" class="badge"></span></div>
+            <div id="habitList" class="checklist"></div>
+            <button id="saveHabitsBtn" class="primary-btn wide">Save & Sync</button>
+          </div>
+          <div class="panel">
+            <h3>Today's Learning Notes</h3>
+            <textarea id="dailyNotes" rows="14" placeholder="What did you learn? What confused you? What will you revise tomorrow?"></textarea>
+            <button id="saveNotesBtn" class="secondary-btn wide">Save & Sync Notes</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="cp" class="view">
+        <div class="two-col">
+          <div class="panel"><h3>Add CP Session</h3><div class="form-grid"><input id="cpDate" type="date"><input id="cpPlatform" placeholder="Platform"><input id="cpProblems" type="number" min="0" placeholder="Problems solved"><input id="cpDuration" type="number" min="0" placeholder="Minutes"><input id="cpTopic" placeholder="Topic"><input id="cpRating" placeholder="Rating/contest (optional)"></div><textarea id="cpNotes" rows="5" placeholder="Mistakes, patterns, upsolving notes..."></textarea><button id="addCpBtn" class="primary-btn">Add & Sync Session</button></div>
+          <div class="panel"><h3>CP Summary</h3><div id="cpSummary" class="summary-cards"></div></div>
+        </div>
+        <div class="panel"><h3>CP History</h3><div id="cpHistory" class="table-wrap"></div></div>
+      </section>
+
+      <section id="research" class="view">
+        <div class="two-col">
+          <div class="panel"><h3>Add Research Session</h3><div class="form-grid"><input id="resDate" type="date"><input id="resPaper" placeholder="Paper / experiment / dataset"><input id="resDuration" type="number" min="0" placeholder="Minutes"><select id="resType"><option>Paper Reading</option><option>Implementation</option><option>Experiment</option><option>Writing</option><option>Dataset Work</option><option>Analysis</option></select></div><textarea id="resNotes" rows="6" placeholder="Key findings, result, next action..."></textarea><button id="addResearchBtn" class="primary-btn">Add & Sync Research</button></div>
+          <div class="panel"><h3>Research Pipeline</h3><div class="pipeline"><span>Problem</span><b>→</b><span>Literature</span><b>→</b><span>Gap</span><b>→</b><span>Baseline</span><b>→</b><span>Experiments</span><b>→</b><span>Evaluation</span><b>→</b><span>Writing</span></div><p class="muted">Your research log is stored in your private cloud account.</p></div>
+        </div>
+        <div class="panel"><h3>Research History</h3><div id="researchHistory" class="table-wrap"></div></div>
+      </section>
+
+      <section id="youtube" class="view">
+        <div class="two-col">
+          <div class="panel"><h3>Add YouTube Task</h3><div class="form-grid"><input id="ytDate" type="date"><input id="ytTitle" placeholder="Video topic/title"><select id="ytStatus"><option>Idea</option><option>Script</option><option>Recorded</option><option>Editing</option><option>Scheduled</option><option>Published</option></select></div><textarea id="ytNotes" rows="5" placeholder="Examples, thumbnail, editing notes..."></textarea><button id="addYtBtn" class="primary-btn">Add & Sync Task</button></div>
+          <div class="panel"><h3>YouTube Workflow</h3><div class="pipeline"><span>Study</span><b>→</b><span>Notes</span><b>→</b><span>Script</span><b>→</b><span>Record</span><b>→</b><span>Edit</span><b>→</b><span>Publish</span></div></div>
+        </div>
+        <div class="panel"><h3>YouTube Board</h3><div id="youtubeBoard" class="kanban"></div></div>
+      </section>
+
+      <section id="analytics" class="view">
+        <div class="stats-grid">
+          <div class="stat-card"><span>📚</span><div><small>Roadmap Completed</small><strong id="anaRoadmap">0%</strong></div></div>
+          <div class="stat-card"><span>✅</span><div><small>Habit Completion</small><strong id="anaHabits">0%</strong></div></div>
+          <div class="stat-card"><span>⏱️</span><div><small>Research Minutes</small><strong id="anaResearch">0</strong></div></div>
+          <div class="stat-card"><span>🧠</span><div><small>CP Minutes</small><strong id="anaCp">0</strong></div></div>
+        </div>
+        <div class="two-col"><div class="panel"><h3>Track Completion</h3><div id="trackAnalytics"></div></div><div class="panel"><h3>Recent Activity</h3><div id="recentActivity"></div></div></div>
+      </section>
+
+      <section id="account" class="view">
+        <div class="two-col">
+          <div class="panel">
+            <h3>Account</h3>
+            <div class="account-grid">
+              <input id="accountName" placeholder="Display name">
+              <button id="saveNameBtn" class="primary-btn">Save Name</button>
+              <hr style="border-color:var(--border);width:100%">
+              <input id="newPassword" type="password" minlength="8" placeholder="New password (8+ characters)">
+              <button id="changePasswordBtn" class="secondary-btn">Change Password</button>
+            </div>
+          </div>
+          <div class="panel">
+            <h3>Cloud Sync</h3>
+            <p class="muted">Every tracker change is stored under your authenticated user ID. Open this same site on your phone or another laptop and log in with the same account to load the same data.</p>
+            <button id="manualSyncBtn" class="secondary-btn">Refresh From Cloud</button>
+            <button id="exportBtn" class="ghost-btn" style="margin-top:8px">Export JSON Backup</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast"></div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
